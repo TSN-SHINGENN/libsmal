@@ -1,11 +1,19 @@
+/**
+ *      Copyright 2020 TSN°SHINGENN All Rights Reserved.
+ *
+ *      Basic Author: Seiichi Takeda  '2020-Nov-11 Active
+ *              Last Alteration $Author: takeda $
+ *
+ *	Dual License :
+ *	non-commercial ... MIT Licence
+ *	    commercial ... Requires permission from the author
+ */
 
 #include <stdint.h>
 #include <stdio.h>
 
 #include "smal_math_def.h"
 #include "smal_atan.h"
-
-
 
 /**
  * @fn float smal_atan2f(const float y, const float x)

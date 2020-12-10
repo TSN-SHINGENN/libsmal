@@ -1,6 +1,10 @@
 /**
  *	Copyright 2020 TSN-SHINGENN All Rights Reserved.
  *	Basic Author: Seiichi Takeda  '2014-March-01 Active
+ *
+ *	Dual License :
+ *	non-commercial ... MIT Licence
+ *	    commercial ... Requires permission from the author
  */
 
 /**
@@ -11,14 +15,26 @@
  */
 
 /* CRL */
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <stdlib.h>
 
 /* this */
-#include "smal_malloc.h"
 #include "smal_slist.h"
+
+#define USE_SMAL_MALLOC
+
+#ifdef USE_SMAL_MALLOC
+#include "smal_malloc.h"
+#define SMAL_MALLOC(s) smal_malloc((s))
+#define SMAL_FREE(p) smal_free((p))
+#else
+#define SMAL_MALLOC(s) malloc((s))
+#define SMAL_FREE(p) free((p))
+#endif
 
 typedef struct _fifoitem {
     struct _fifoitem *next;
@@ -28,7 +44,7 @@ typedef struct _fifoitem {
 typedef struct _slist_ext {
     fifoitem_t *r_p, *w_p;	/* カレント参照のポインタ */
     uint8_t sizof_element;
-    unsigned int cnt;
+    size_t cnt;
     fifoitem_t base;		/* 配列0の構造体があるので必ず最後にする */
 } slist_ext_t;
 
@@ -77,7 +93,7 @@ int smal_slist_init( smal_slist_t *const self_p, const uint8_t sizof_element)
 {
     static slist_ext_t *e;
 
-    e = (slist_ext_t *)smal_malloc(sizeof(slist_ext_t));
+    e = (slist_ext_t *)SMAL_MALLOC(sizeof(slist_ext_t));
     if (NULL == e) {
 	return ERANGE;
     }
@@ -87,6 +103,7 @@ int smal_slist_init( smal_slist_t *const self_p, const uint8_t sizof_element)
     e->sizof_element = sizof_element;
 
     e->r_p = e->w_p = &e->base;
+    e->cnt = 0;
 
     return 0;
 }
@@ -110,10 +127,10 @@ int smal_slist_destroy( smal_slist_t *const self_p)
 
     /* 最後のエレメントがbaseで無ければ削除 */
     if (e->r_p != &e->base) {
-	smal_free( e->r_p);
+	SMAL_FREE( e->r_p);
 	e->r_p = NULL;
     }
-    smal_free(self_p->ext);
+    SMAL_FREE(self_p->ext);
 
     return 0;
 }
@@ -140,7 +157,7 @@ int smal_slist_push(smal_slist_t *const self_p, const void *const el_p, const ui
 	return EINVAL;
     }
 
-    f = (fifoitem_t *)smal_malloc( (sizeof(fifoitem_t) + e->sizof_element));
+    f = (fifoitem_t *)SMAL_MALLOC( (sizeof(fifoitem_t) + e->sizof_element));
     if (NULL == f) {
 	return EINVAL;
     }
@@ -185,12 +202,12 @@ int smal_slist_pop(smal_slist_t *const self_p)
     --(e->cnt);
 
     if (tmp != &e->base) {
-	smal_free(tmp);
+	SMAL_FREE(tmp);
     }
 
     if (e->cnt == 0) {
 	if (e->r_p != &e->base) {
-	    smal_free(e->r_p);
+	    SMAL_FREE(e->r_p);
 	}
 	e->r_p = e->w_p = &e->base;
     }
@@ -262,7 +279,7 @@ int smal_slist_clear(smal_slist_t *const self_p)
  * @param self_p mpsx_stl_slist_t構造体インスタンスポインタ
  * @retval 0以上 要素数
  */
-uint16_t smal_slist_get_pool_cnt(smal_slist_t *const self_p)
+size_t smal_slist_get_pool_cnt(smal_slist_t *const self_p)
 {
     static const slist_ext_t *e;
     /* initialize */
@@ -289,7 +306,7 @@ int smal_slist_is_empty(smal_slist_t *const self_p)
 }
 
 /**
- * @fn int mpsx_stl_slist_get_element_at( mpsx_stl_slist_t *const self_p, const unsigned int num, void *const el_p, const int sizof_element);
+ * @fn int mpsx_stl_slist_get_element_at( mpsx_stl_slist_t *const self_p, const size_t num, void *const el_p, const int sizof_element);
  * @brief キューに保存されているエレメントを返します
  * @param self_p mpsx_stl_slist_t構造体インスタンスポインタ
  * @param num 0空始まるキュー先頭からのエレメント配列番号
@@ -302,7 +319,7 @@ int smal_slist_is_empty(smal_slist_t *const self_p)
  * @retval EINVAL sizof_elementのサイズが異なる(小さい）
  */
 int smal_slist_get_element_at(smal_slist_t *const self_p,
-				       const unsigned int num, void *const el_p,
+				       const size_t num, void *const el_p,
 				       const uint8_t sizof_element)
 {
     static slist_ext_t *e;
@@ -311,15 +328,7 @@ int smal_slist_get_element_at(smal_slist_t *const self_p,
 
     /* initialize */
     e = get_slist_ext(self_p);
-    if (smal_slist_is_empty(self_p)) {
-	return EINVAL;
-    }
-
-    if (NULL == el_p) {
-	return -1;
-    }
-
-    if (sizof_element < e->sizof_element) {
+    if ((NULL == el_p) ||(sizof_element < e->sizof_element)) {
 	return EINVAL;
     }
 
@@ -373,7 +382,7 @@ int smal_slist_back( smal_slist_t *const self_p, void *const el_p, const uint8_t
 }
 
 /**
- * @fn int smal_slist_insert_at( smal_slist_t *const self_p, const uint16_t no, void *const el_p, const uint8_t sizof_element)
+ * @fn int smal_slist_insert_at( smal_slist_t *const self_p, const size_t no, void *const el_p, const uint8_t sizof_element)
  * @brief 指定されたエレメント番号の前に、エレメントデータを挿入します。
  * @param self_p mpsx_stl_slist_t構造体インスタンスポインタ
  * @param no オブジェクト内の0～のリストエレメント番号
@@ -385,9 +394,9 @@ int smal_slist_back( smal_slist_t *const self_p, void *const el_p, const uint8_t
  * @retval -1 それ以外の致命的な失敗
  * @retval 0 成功
  */
-int smal_slist_insert_at( smal_slist_t *const self_p, const unsigned int no, void *const el_p, const uint8_t sizof_element)
+int smal_slist_insert_at( smal_slist_t *const self_p, const size_t no, void *const el_p, const uint8_t sizof_element)
 {
-    static unsigned int n;
+    static size_t n;
     static slist_ext_t *e;
     static fifoitem_t *__restrict cur_ticket_p;
     static fifoitem_t *__restrict fwd_ticket_p;
@@ -413,7 +422,7 @@ int smal_slist_insert_at( smal_slist_t *const self_p, const unsigned int no, voi
 	return -1;
     }
 
-    f = (fifoitem_t *) smal_malloc(sizeof(fifoitem_t) + e->sizof_element);
+    f = (fifoitem_t *) SMAL_MALLOC(sizeof(fifoitem_t) + e->sizof_element);
     if (NULL == f) {
 	return -1;
     }
@@ -431,7 +440,7 @@ int smal_slist_insert_at( smal_slist_t *const self_p, const unsigned int no, voi
 }
 
 /**
- * @fn int smal_slist_erase_at( smal_slist_t *const self_p, const unsigned int no)
+ * @fn int smal_slist_erase_at( smal_slist_t *const self_p, const size_t no)
  * @brief 指定されたエレメントを消去します。
  *      制御確認中
  * @param self_p mpsx_stl_slist_t構造体インスタンスポインタ
@@ -439,7 +448,7 @@ int smal_slist_insert_at( smal_slist_t *const self_p, const unsigned int no, voi
  * @retval 0 成功
  * @retval EINVAL 指定された番号のエレメントが存在しない
  **/
-int smal_slist_erase_at( smal_slist_t *const self_p, const unsigned int no)
+int smal_slist_erase_at( smal_slist_t *const self_p, const size_t no)
 {
     static slist_ext_t *e;
     static fifoitem_t *__restrict tmp;
@@ -476,16 +485,60 @@ int smal_slist_erase_at( smal_slist_t *const self_p, const unsigned int no)
     }
 
     if (tmp != &e->base) {
-	 smal_free(tmp);
+	 SMAL_FREE(tmp);
     }
 
     if (e->cnt == 0) {
 	if (e->r_p != &e->base) {
-	    smal_free(e->r_p);
+	    SMAL_FREE(e->r_p);
 	}
 	e->r_p = e->w_p = &e->base;
     }
 
     return 0;
+
+}
+
+/**
+ * @fn int smal_slist_overwrite_element_at( smal_slist_t *const self_p, const size_t num, const void *const el_p, const size_t sizof_element)
+ * @brief 指定されたエレメントを上書きします。
+ * @param self_p mpsx_stl_slist_t構造体インスタンスポインタ
+ * @param no オブジェクト内の0～のリストエレメント番号
+ * @retval 0 成功
+ * @retval EINVAL 指定された番号のエレメントが存在しない
+ **/
+int smal_slist_overwrite_element_at( smal_slist_t *const self_p, const size_t num, const void *const el_p, const size_t sizof_element)
+{
+    static slist_ext_t *e;
+    static fifoitem_t *__restrict item_p;
+    size_t n;
+
+    /* initialize */
+    e = get_slist_ext(self_p);
+    if (smal_slist_is_empty(self_p)) {
+	return EINVAL;
+    }
+
+    if (NULL == el_p) {
+	return -1;
+    }
+
+    if (sizof_element < e->sizof_element) {
+	return EINVAL;
+    }
+
+    if (!(num < e->cnt)) {
+	return EINVAL;
+    }
+
+    for (item_p = &e->base, n = 0; n < num; ++n) {
+	item_p = item_p->next;
+    }
+
+    memcpy( item_p->next->data, el_p, e->sizof_element);
+
+
+    return 0;
+
 
 }

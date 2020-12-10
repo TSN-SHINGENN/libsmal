@@ -3,6 +3,10 @@
  *
  *      Basic Author: Seiichi Takeda  '2020-July-02 Active
  *              Last Alteration $Author: takeda $
+ *
+ *	Dual License :
+ *	non-commercial ... MIT Licence
+ *	    commercial ... Requires permission from the author
  */
 
 #include <stddef.h>

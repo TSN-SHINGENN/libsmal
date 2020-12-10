@@ -1,6 +1,10 @@
 /**
  *	Copyright 2020 TSN-SHINGENN All Rights Reserved.
  *	Basic Author: Seiichi Takeda  '2020-November-03 Active
+ *
+ *	Dual License :
+ *	non-commercial ... MIT Licence
+ *	    commercial ... Requires permission from the author
  */
 
 /**
@@ -12,8 +16,19 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include "smal_malloc.h"
 #include "smal_u8queue.h"
+
+#define USE_SMAL_MALLOC
+
+#ifdef USE_SMAL_MALLOC
+#include "smal_malloc.h"
+#define SMAL_MALLOC(s) smal_malloc((s))
+#define SMAL_FREE(p) smal_free((p))
+#else
+#define SMAL_MALLOC(s) malloc((s))
+#define SMAL_FREE(p) free((p))
+#endif
+
 
 /* ƒLƒ…[‚ÌŽŸ‚Ì‘}“üˆÊ’u‚ð‹‚ß‚é */
 #define queue_next(s, n) (((n) + 1) % (s)->queue_size)
@@ -22,7 +37,7 @@ int smal_u8queue_init(smal_u8queue_t *const self_p, const size_t size)
 {
     self_p->head = 0;
     self_p->tail = 0;
-    self_p->buf = (uint8_t*)smal_malloc(sizeof(uint8_t)*size);
+    self_p->buf = (uint8_t*)SMAL_MALLOC(sizeof(uint8_t)*size);
     if (NULL == self_p->buf) {
 	return ERANGE;
     }
@@ -70,6 +85,6 @@ int smal_u8queue_pop(smal_u8queue_t *const self_p, uint8_t *const u8_p)
 
 int smal_u8queue_destroy(smal_u8queue_t *const self_p)
 {
-    smal_free(self_p->buf);
+    SMAL_FREE(self_p->buf);
     return 0;
 }

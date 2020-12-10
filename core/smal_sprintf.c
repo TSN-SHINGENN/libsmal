@@ -1,6 +1,10 @@
 /**
  *	Copyright 2020 TSN-SHINGENN All Rights Reserved.
  *	Basic Author: Seiichi Takeda  '2014-March-01 Active
+ *
+ *	Dual License :
+ *	non-commercial ... MIT Licence
+ *	    commercial ... Requires permission from the author
  */
 
 #if 0 /* for WIN32 */
