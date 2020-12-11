@@ -5,8 +5,6 @@
 #include <stdint.h>
 #include <stdarg.h>
 
-// #define USE_FLOAT_FORMAT		// Float•\¦‚ğg‚¤ê‡
-
 #if defined (__cplusplus )
 extern "C" {
 #endif

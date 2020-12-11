@@ -1,10 +1,6 @@
 /**
  *	Copyright 2020 TSN-SHINGENN All Rights Reserved.
  *	Basic Author: Seiichi Takeda  '2014-March-01 Active
- *
- *	Dual License :
- *	non-commercial ... MIT Licence
- *	    commercial ... Requires permission from the author
  */
 
 #if 0 /* for WIN32 */
@@ -18,9 +14,44 @@
 #include <stdarg.h>
 #include <math.h>
 
-#include "smal_stdint.h"
-#include "smal_pow.h"
 #include "smal_sprintf.h"
+
+#define USE_SMAL_STDINT
+#define USE_FLOAT_FORMAT
+#define USE_SMAL_POW
+
+#ifdef USE_SMAL_STDINT
+#include "smal_stdint.h"
+#define SMAL_UCHAR_T smal_uchar_t
+#define SMAL_CHAR_T smal_char_t
+#define SMAL_USHORT_T smal_ushort_t
+#define SMAL_SHORT_T smal_short_t
+#define SMAL_UINT_T smal_uint_t
+#define SMAL_INT_T smal_int_t
+#define SMAL_ULONG_T smal_ulong_t
+#define SMAL_LONG_T smal_long_t
+#define SMAL_ULLONG_T smal_ullong_t
+#define SMAL_LLONG_T smal_llong_t
+#else
+#define SMAL_UCHAR_T unsigned char
+#define SMAL_CHAR_T char
+#define SMAL_USHORT_T unsigned short int
+#define SMAL_SHORT_T short
+#define SMAL_UINT_T unsigned int
+#define SMAL_INT_T int
+#define SMAL_ULONG_T unsigned long
+#define SMAL_LONG_T long
+#define SMAL_ULLONG_T unsigned long long
+#define SMAL_LLONG_T long long
+#endif
+
+
+#ifdef USE_SMAL_POW
+#include "smal_pow.h"
+#define SMAL_IPOW10(x) smal_ipow10((x))
+#else
+#define SMAL_IPOW10(x) pow(10.0, (x))
+#endif
 
 #define _isnumc(x) ( (x) >= '0' && (x) <= '9' )
 #define _ctoi(x)   ( (x) -  '0' )
@@ -40,14 +71,13 @@ typedef enum _enum_INTEGER {
     C  = -2     //Char
 } enum_INTEGER_t;
 
-static smal_llong_t get_signed(va_list *const , const enum_INTEGER_t);
-static smal_ullong_t get_unsigned(va_list *const , const enum_INTEGER_t);
-static void put_integer(void (*__putc)(char), const smal_ullong_t v, const smal_int_t radix, const smal_int_t put_len, const smal_char_t sign, const uint8_t flags);
+static SMAL_LLONG_T get_signed(va_list *const , const enum_INTEGER_t);
+static SMAL_ULLONG_T get_unsigned(va_list *const , const enum_INTEGER_t);
+static void put_integer(void (*__putc)(char), const SMAL_ULLONG_T v, const SMAL_INT_T radix, const SMAL_INT_T put_len, const SMAL_CHAR_T sign, const uint8_t flags);
 static void(*_this_out_method_cb)(const char);
-static void put_float(void (*__putc)(char), const float f, const smal_int_t put_len, const smal_char_t sign, const uint8_t flags);
-static size_t modp_dtoa(smal_char_t *const buf, const size_t bufsz, const float f);
+static void put_float(void (*__putc)(char), const float f, const SMAL_INT_T put_len, const SMAL_CHAR_T sign, const uint8_t flags);
 
-static smal_ullong_t get_unsigned(va_list *const ap_p, const enum_INTEGER_t type)
+static SMAL_ULLONG_T get_unsigned(va_list *const ap_p, const enum_INTEGER_t type)
 {
     static enum_INTEGER_t t;
 
@@ -58,18 +88,27 @@ static smal_ullong_t get_unsigned(va_list *const ap_p, const enum_INTEGER_t type
 	t = C;
     }
     switch(t) {
-	case LL: return (smal_ullong_t)va_arg(*ap_p, smal_ullong_t); break;
-	case  L: return (smal_ullong_t)va_arg(*ap_p, smal_ulong_t);      break;
-	case  I: return (smal_ullong_t)va_arg(*ap_p, smal_uint_t);       break;
-	case  S: return (smal_ullong_t)va_arg(*ap_p, smal_ushort_t); break;
-	case  C: return (smal_ullong_t)va_arg(*ap_p, smal_uchar_t);  break;
+#ifdef USE_SMAL_STDINT
+	case LL: return (SMAL_ULLONG_T)va_arg(*ap_p, SMAL_ULLONG_T); break;
+	case  L: return (SMAL_ULLONG_T)va_arg(*ap_p, SMAL_ULONG_T);      break;
+	case  I: return (SMAL_ULLONG_T)va_arg(*ap_p, SMAL_UINT_T);       break;
+	case  S: return (SMAL_ULLONG_T)va_arg(*ap_p, SMAL_USHORT_T); break;
+	case  C: return (SMAL_ULLONG_T)va_arg(*ap_p, SMAL_UCHAR_T);  break;
+#else
+	case LL: return (SMAL_ULLONG_T)va_arg(*ap_p, unsigned long long); break;
+	case  L: return (SMAL_ULLONG_T)va_arg(*ap_p, unsigned long);      break;
+	case  I: return (SMAL_ULLONG_T)va_arg(*ap_p, unsigned int);       break;
+	case  S: return (SMAL_ULLONG_T)va_arg(*ap_p, unsigned short); break;
+	case  C: return (SMAL_ULLONG_T)va_arg(*ap_p, unsigned char);  break;
+#endif
+
     }
 
-    return (smal_ullong_t) va_arg(*ap_p, smal_uint_t);
+    return (SMAL_ULLONG_T) va_arg(*ap_p, SMAL_UINT_T);
 }
 
 
-static smal_llong_t get_signed(va_list *const ap_p, const enum_INTEGER_t type)
+static SMAL_LLONG_T get_signed(va_list *const ap_p, const enum_INTEGER_t type)
 {
     static enum_INTEGER_t t;
 
@@ -81,14 +120,22 @@ static smal_llong_t get_signed(va_list *const ap_p, const enum_INTEGER_t type)
     }
 
     switch(t) {
-	case LL: return (smal_llong_t)va_arg(*ap_p, smal_llong_t); break;
-	case  L: return (smal_llong_t)va_arg(*ap_p, smal_long_t);      break;
-	case  I: return (smal_llong_t)va_arg(*ap_p, smal_int_t);       break;
-	case  S: return (smal_llong_t)va_arg(*ap_p, smal_short_t); break;
-	case  C: return (smal_llong_t)va_arg(*ap_p, smal_char_t);  break;
+#ifdef USE_SMAL_STDINT
+	case LL: return (SMAL_LLONG_T)va_arg(*ap_p, SMAL_LLONG_T); break;
+	case  L: return (SMAL_LLONG_T)va_arg(*ap_p, SMAL_LONG_T);      break;
+	case  I: return (SMAL_LLONG_T)va_arg(*ap_p, SMAL_INT_T);       break;
+	case  S: return (SMAL_LLONG_T)va_arg(*ap_p, SMAL_SHORT_T); break;
+	case  C: return (SMAL_LLONG_T)va_arg(*ap_p, SMAL_CHAR_T);  break;
+#else
+	case LL: return (SMAL_LLONG_T)va_arg(*ap_p, long long); break;
+	case  L: return (SMAL_LLONG_T)va_arg(*ap_p, long);      break;
+	case  I: return (SMAL_LLONG_T)va_arg(*ap_p, int);       break;
+	case  S: return (SMAL_LLONG_T)va_arg(*ap_p, short); break;
+	case  C: return (SMAL_LLONG_T)va_arg(*ap_p, char);  break;
+#endif
     }
 
-    return (smal_llong_t) va_arg(*ap_p, smal_int_t);
+    return (SMAL_LLONG_T) va_arg(*ap_p, SMAL_INT_T);
 }
 
 #ifdef USE_FLOAT_FORMAT
@@ -197,11 +244,10 @@ static size_t ftoa(char *const buf, const size_t bufsz, const float f)
     return l;
 }
 
-static void put_float(void (*__putc)(char), const float f, const smal_int_t put_len, const smal_char_t sign, const uint8_t flags);
+static void put_float(void (*__putc)(char), const float f, const SMAL_INT_T put_len, const SMAL_CHAR_T sign, const uint8_t flags)
 {
     static char fstr[80];
     static size_t i, n;
-    static float num;
 
     i = ftoa(fstr, 80, f);
     for(n=0; ( i > 0 );) {
@@ -215,7 +261,7 @@ static void put_float(void (*__putc)(char), const float f, const smal_int_t put_
 #endif /* end of USE_FLOAT_FORMAT */
 
 
-static void put_integer(void (*__putc)(char), const smal_ullong_t v, const smal_int_t radix, const smal_int_t put_len, const smal_char_t sign, const uint8_t flags)
+static void put_integer(void (*__putc)(char), const SMAL_ULLONG_T v, const SMAL_INT_T radix, const SMAL_INT_T put_len, const SMAL_CHAR_T sign, const uint8_t flags)
 {
     static const char *const symbols_s = "0123456789abcdef";
     static const char *const symbols_c = "0123456789ABCDEF";
@@ -223,7 +269,7 @@ static void put_integer(void (*__putc)(char), const smal_ullong_t v, const smal_
     static int i, length;
     static char pad = ' ';
     static const char *symbols;
-    static smal_ullong_t n;
+    static SMAL_ULLONG_T n;
 
     /* initialize */
     i=0;
@@ -308,10 +354,10 @@ char * smal_strchr(const char *const s, const int c)
  */
 void smal_vprintf(void (*__putc)(char), const char *const fmt, const va_list va)
 {
-    static smal_ullong_t ui;
-    static smal_llong_t i;
-    static smal_int_t length;
-    static smal_int_t precision;
+    static SMAL_ULLONG_T ui;
+    static SMAL_LLONG_T i;
+    static SMAL_INT_T length;
+    static SMAL_INT_T precision;
     static enum_INTEGER_t int_type;
     static va_list ap;
     static uint8_t flags;
@@ -319,7 +365,7 @@ void smal_vprintf(void (*__putc)(char), const char *const fmt, const va_list va)
     static const char *f_p;
 
     va_copy(ap, va);
-    for (f_p=fmt, sign=0, flags=0, length=0, precision=0, int_type=0;; flags=0) {
+    for (f_p=fmt, sign=0, flags=0, length=0, precision=0, int_type=0;; flags=0, int_type=0) {
 
         while (*f_p && *f_p != '%') {
 	    __putc(*f_p++);
@@ -390,18 +436,18 @@ void smal_vprintf(void (*__putc)(char), const char *const fmt, const va_list va)
         switch (*f_p) {
             case 'd':
             case 'i':
-                i = (smal_llong_t)get_signed(&ap, int_type);
+                i = (SMAL_LLONG_T)get_signed(&ap, int_type);
                 if (i < 0) { i = -i; sign = '-'; }
                 put_integer(__putc, i, 10, length, sign, flags);
                 break;
 
             case 'u':
-                ui = (smal_ullong_t)get_unsigned(&ap, int_type);
+                ui = (SMAL_ULLONG_T)get_unsigned(&ap, int_type);
                 put_integer(__putc,  ui, 10, length, sign, flags);
                 break;
 
             case 'o':
-                ui = (smal_ullong_t)get_unsigned(&ap, int_type);
+                ui = (SMAL_ULLONG_T)get_unsigned(&ap, int_type);
                 put_integer(__putc,  ui, 8, length, sign, flags);
                 break;
 #ifdef USE_FLOAT_FORMAT
@@ -419,12 +465,12 @@ void smal_vprintf(void (*__putc)(char), const char *const fmt, const va_list va)
             case 'X':
                 flags |= CAPITAL_LETTER;
             case 'x':
-                ui = (smal_ullong_t)get_unsigned(&ap, int_type);
+                ui = (SMAL_ULLONG_T)get_unsigned(&ap, int_type);
                 put_integer(__putc, ui, 16, length, sign, flags);
                 break;
 
             case 'c': 
-                i = (smal_llong_t)get_unsigned(&ap, C);
+                i = (SMAL_LLONG_T)get_unsigned(&ap, C);
                 __putc((char)i);
 	        break;
 
