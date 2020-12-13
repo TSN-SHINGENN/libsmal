@@ -1,5 +1,5 @@
 /**
- *      Copyright 2020 TSN°SHINGENN All Rights Reserved.
+ *      Copyright 2020 TSNï½°SHINGENN All Rights Reserved.
  *
  *      Basic Author: Seiichi Takeda  '2020-Nov-11 Active
  *              Last Alteration $Author: takeda $
@@ -17,10 +17,10 @@
 
 /**
  * @fn float smal_atan2f(const float y, const float x)
- * @brief “ñ‚Â‚Ì•Ï”‚É‘Î‚·‚é‹t³Ú(Arc Tangent)‚ÌŠÖ”
- * @param ret_p x,y‚©‚ç‹‚ß‚ç‚ê‚é‹t³Ú’l
- * @param y ‚’¼À•W(³‹K‰»j
- * @param x …•½À•W(³‹K‰»)
+ * @brief äºŒã¤ã®å¤‰æ•°ã«å¯¾ã™ã‚‹é€†æ­£æ¥(Arc Tangent)ã®é–¢æ•°
+ * @param ret_p x,yã‹ã‚‰æ±‚ã‚ã‚‰ã‚Œã‚‹é€†æ­£æ¥å€¤
+ * @param y å‚ç›´åº§æ¨™(æ­£è¦åŒ–ï¼‰
+ * @param x æ°´å¹³åº§æ¨™(æ­£è¦åŒ–)
  **/
 float smal_atan2f(const float y, const float x)
 {
@@ -54,7 +54,7 @@ float smal_atan2f(const float y, const float x)
 
 /**
  * @fn void smal_atanl_cordic(const uint8_t num_steps, const long double a)
- * @brief ‹t³Ú(arc tangent)‚ğCORDICƒAƒ‹ƒSƒŠƒYƒ€‚ÅŒvZ‚·‚éŠÖ”
+ * @brief é€†æ­£æ¥(arc tangent)ã‚’CORDICã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã§è¨ˆç®—ã™ã‚‹é–¢æ•°
  */
 long double smal_atanl_cordic(const uint8_t num_steps, const long double a)
 {
@@ -98,16 +98,28 @@ long double smal_atanl_cordic(const uint8_t num_steps, const long double a)
 
 #define FIX_CORDIC_STEPS 15
 
+/**
+ * @fn double smal_atan(const double x)
+ * @brief cordicã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã§è¨ˆç®—ã™ã‚‹atan()ã€‚å¼•æ•°ã€æˆ»ã‚Šå€¤ã¨ã‚‚ã«doubleå€¤
+ **/
 double smal_atan(const double x)
 {
     return (double)smal_atanl_cordic(FIX_CORDIC_STEPS, x);
 }
 
+/**
+ * @fn double smal_atan(const double x)
+ * @brief cordicã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã§è¨ˆç®—ã™ã‚‹atan()ã€‚å¼•æ•°ã€æˆ»ã‚Šå€¤ã¨ã‚‚ã«floatå€¤
+ **/
 float smal_atanf(float x)
 {
     return (float)smal_atanl_cordic(FIX_CORDIC_STEPS, x);
 }
 
+/**
+ * @fn double smal_atan(const double x)
+ * @brief cordicã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã§è¨ˆç®—ã™ã‚‹atan()ã€‚å¼•æ•°ã€æˆ»ã‚Šå€¤ã¨ã‚‚ã«long doubleå€¤
+ **/
 long double smal_atanl(const long double x)
 {
     return smal_atanl_cordic(FIX_CORDIC_STEPS, x);
