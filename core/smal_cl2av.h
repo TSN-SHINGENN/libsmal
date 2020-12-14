@@ -7,9 +7,9 @@
 #include <stdint.h>
 
 typedef union _smal_cl2av_attr {
-    unsigned int flags;			/*!< ƒrƒbƒgƒtƒ‰ƒO‚ð0ƒNƒŠƒA‚·‚éŽž‚ÉŽg—p */
+    unsigned int flags;			/*!< ãƒ“ãƒƒãƒˆãƒ•ãƒ©ã‚°ã‚’0ã‚¯ãƒªã‚¢ã™ã‚‹æ™‚ã«ä½¿ç”¨ */
     struct {
-	unsigned int untrim_space:1;	/*!< ‹ó”’•¶Žš‚ðíœ‚µ‚Ü‚· */
+	unsigned int untrim_space:1;	/*!< ç©ºç™½æ–‡å­—ã‚’å‰Šé™¤ã—ã¾ã™ */
     } f;
 } smal_cl2av_attr_t; 
 
