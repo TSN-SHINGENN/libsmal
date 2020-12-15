@@ -1,13 +1,17 @@
 /**
- *      Copyright 2020 TSNï½°SHINGENN All Rights Reserved.
+ *      Copyright 2020 TSN°SHINGENN All Rights Reserved.
  *
  *      Basic Author: Seiichi Takeda  '2020-July-02 Active
  *              Last Alteration $Author: takeda $
+ *
+ *	Dual License :
+ *	non-commercial ... MIT Licence
+ *	    commercial ... Requires permission from the author
  */
 
 /**
  * @file smal_cl2av.cpp
- *   ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å¼•æ•°åˆ†å‰²é–¢æ•°
+ *   ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”•ªŠ„ƒ‰ƒCƒuƒ‰ƒŠ
  */
 
 #include <stdint.h>
@@ -42,8 +46,8 @@ static int own_strtok_is_eol(own_strtok_t * const __restrict self_p, const char*
 
 /**
  * @fn static own_strtok_t own_strtok_reset( const smal_cl2av_attr_t attr)
- * @brief own_strtokã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’åˆæœŸåŒ–ã—ã¾ã™
- * @return åˆæœŸåŒ–ã•ã‚ŒãŸown_strtok_tã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+ * @brief own_strtokƒIƒuƒWƒFƒNƒg‚ğ‰Šú‰»‚µ‚Ü‚·
+ * @return ‰Šú‰»‚³‚ê‚½own_strtok_tƒCƒ“ƒXƒ^ƒ“ƒX
  */
 static own_strtok_t own_strtok_reset( const smal_cl2av_attr_t attr)
 {
@@ -58,17 +62,17 @@ static own_strtok_t own_strtok_reset( const smal_cl2av_attr_t attr)
 
 /**
  * @fn static int own_strtok( own_strtok_t *self_p, char **result_pointer, char *s, const char *delim, const char delim2)
- * @brief ãƒ‡ãƒªãƒŸã‚¿ã‚’èªè­˜ã—ã¦NULLã§åŒºåˆ‡ã‚Šãã®ãƒˆãƒ¼ã‚¯ãƒ³ã¨ã—ã¾ã™ã€‚æ¬¡ã®ãƒˆãƒ¼ã‚¯ãƒ³ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã—ã¾ã™ã€‚
- *	delim2ã§å›²ã¾ã‚ŒãŸéƒ¨åˆ†ã¯ãã‚Œã‚’ä¸€ã¤ã®ãƒˆãƒ¼ã‚¯ãƒ³ã¨ã—ã¦åŒºåˆ‡ã‚Šã¾ã™
- * @param self_p own_strtokã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒã‚¤ãƒ³ã‚¿
- * @param result_pointer æ¬¡ã®ãƒˆãƒ¼ã‚¯ãƒ³ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã¾ãŸã€ æ¬¡ã®ãƒˆãƒ¼ã‚¯ãƒ³ãŒãªã‘ã‚Œã° NULL ã‚’è¿”ã™ã€‚ãƒã‚¤ãƒ³ã‚¿
- * @param s è§£æå¯¾è±¡ã®æ–‡å­—åˆ—ãƒãƒƒãƒ•ã‚¡ãƒã‚¤ãƒ³ã‚¿(äºŒå€‹ç›®ä»¥é™ã®ãƒˆãƒ¼ã‚¯ãƒ³ã®è§£æã«ã¯NULLã‚’æŒ‡å®šã—ã¾ã™ï¼‰
- *	æŒ‡å®šã•ã‚ŒãŸãƒãƒƒãƒ•ã‚¡ãƒ¼ã¯ãƒˆãƒ¼ã‚¯ãƒ³ã«åˆ†å‰²ã™ã‚‹ãŸã‚ãƒ‡ãƒ¼ã‚¿ã‚’å¤‰æ›´ã—ã¾ã™
- * @param delim ãƒ‡ãƒªãƒŸã‚¿ã®ASCIIæ–‡å­—é›†åˆåˆ—
- * @param delim2 å›²ã„æ–‡å­—ASCIIæ–‡å­—('\0'ã§ç„¡è¦–)
- * @retval 0 æˆåŠŸ
- * @retval EINVAL å¼•æ•°ãŒä¸æ­£
- * @retval EIO å›²ã„æ–‡å­—ã®çµ‚ç«¯ãŒè¦‹ã¤ã‹ã‚‰ãªã„
+ * @brief ƒfƒŠƒ~ƒ^‚ğ”F¯‚µ‚ÄNULL‚Å‹æØ‚è‚»‚Ìƒg[ƒNƒ“‚Æ‚µ‚Ü‚·BŸ‚Ìƒg[ƒNƒ“‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚µ‚Ü‚·B
+ *	delim2‚ÅˆÍ‚Ü‚ê‚½•”•ª‚Í‚»‚ê‚ğˆê‚Â‚Ìƒg[ƒNƒ“‚Æ‚µ‚Ä‹æØ‚è‚Ü‚·
+ * @param self_p own_strtokƒCƒ“ƒXƒ^ƒ“ƒXƒ|ƒCƒ“ƒ^
+ * @param result_pointer Ÿ‚Ìƒg[ƒNƒ“‚Ö‚Ìƒ|ƒCƒ“ƒ^‚Ü‚½A Ÿ‚Ìƒg[ƒNƒ“‚ª‚È‚¯‚ê‚Î NULL ‚ğ•Ô‚·Bƒ|ƒCƒ“ƒ^
+ * @param s ‰ğÍ‘ÎÛ‚Ì•¶š—ñƒoƒbƒtƒ@ƒ|ƒCƒ“ƒ^(“ñŒÂ–ÚˆÈ~‚Ìƒg[ƒNƒ“‚Ì‰ğÍ‚É‚ÍNULL‚ğw’è‚µ‚Ü‚·j
+ *	w’è‚³‚ê‚½ƒoƒbƒtƒ@[‚Íƒg[ƒNƒ“‚É•ªŠ„‚·‚é‚½‚ßƒf[ƒ^‚ğ•ÏX‚µ‚Ü‚·
+ * @param delim ƒfƒŠƒ~ƒ^‚ÌASCII•¶šW‡—ñ
+ * @param delim2 ˆÍ‚¢•¶šASCII•¶š('\0'‚Å–³‹)
+ * @retval 0 ¬Œ÷
+ * @retval EINVAL ˆø”‚ª•s³
+ * @retval EIO ˆÍ‚¢•¶š‚ÌI’[‚ªŒ©‚Â‚©‚ç‚È‚¢
  */
 static int own_strtok(own_strtok_t * const __restrict self_p,
 		      char **result_pointer, char *s, const char *delim,
@@ -92,19 +96,19 @@ static int own_strtok(own_strtok_t * const __restrict self_p,
 	self_p->strtok_pbuf = s;
 	self_p->stat.f.initial = 1;
 	if((delim2 != '\0') && (NULL!=strchr(delim, delim2))) {
-	    /* å›²ã„æ–‡å­—ã¨ãƒ‡ãƒªãƒŸã‚¿ãŒé‡ãªã£ã¦ã„ã‚‹ */
+	    /* ˆÍ‚¢•¶š‚ÆƒfƒŠƒ~ƒ^‚ªd‚È‚Á‚Ä‚¢‚é */
   	    return EINVAL;
 	}
     } 
 
-    /* å›²ã„æ–‡å­—ãŒè¨­å®šã•ã‚Œã¦ã„ã¦ã€å…ˆé ­ã‹ã‚‰å›²ã„æ–‡å­—ãŒå‡ºã¦ããŸå ´åˆã¯å…ˆæ–¹ã®åŒºåˆ‡ã‚Šæ–‡å­—é£›ã°ã—ã¯è¡Œã‚ãªã„ */
+    /* ˆÍ‚¢•¶š‚ªİ’è‚³‚ê‚Ä‚¢‚ÄAæ“ª‚©‚çˆÍ‚¢•¶š‚ªo‚Ä‚«‚½ê‡‚Íæ•û‚Ì‹æØ‚è•¶š”ò‚Î‚µ‚Ís‚í‚È‚¢ */
     if(('\0' != *self_p->strtok_pbuf) && (delim2 != *self_p->strtok_pbuf)) {
 	char * __restrict p = self_p->strtok_pbuf;
 	int a, b, c;
 
-	/* å…ˆé ­ã‹ã‚‰çµ‚ç«¯æ–‡å­—ãƒ»å›²ã„æ–‡å­— ã§ã¯ãªãã€åŒºåˆ‡ã‚Šæ–‡å­—ã®å ´åˆã¯ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã—ã¦é£›ã°ã™ */
+	/* æ“ª‚©‚çI’[•¶šEˆÍ‚¢•¶š ‚Å‚Í‚È‚­A‹æØ‚è•¶š‚Ìê‡‚ÍƒCƒ“ƒNƒŠƒƒ“ƒg‚µ‚Ä”ò‚Î‚· */
 	while(((a=('\0' != *p)) && (b=( delim2 != *p ))) && (c=(NULL != strchr(delim, *p)))) {
-	    /* ç©ºç™½æ–‡å­—ã®æ‰±ã„ãŒç‰¹æ®Šãªã®ã§æ¤œå‡ºæ™‚ã¯è„±å‡ºã™ã‚‹ */
+	    /* ‹ó”’•¶š‚Ìˆµ‚¢‚ª“Áê‚È‚Ì‚ÅŒŸo‚Í’Eo‚·‚é */
 	    if (!(self_p->attr.f.untrim_space) && (' ' == *p) ) {
 		break;
 	    }
@@ -112,7 +116,7 @@ static int own_strtok(own_strtok_t * const __restrict self_p,
 	}
 	self_p->strtok_pbuf = p;
 
-	/* ã™ã§ã«çµ‚ç«¯ãªã‚‰æŠœã‘ã‚‹ */
+	/* ‚·‚Å‚ÉI’[‚È‚ç”²‚¯‚é */
 	if( '\0' == *(self_p->strtok_pbuf) ) {
 	    *result_pointer = NULL;
 	    status = 0;
@@ -120,7 +124,7 @@ static int own_strtok(own_strtok_t * const __restrict self_p,
 	}
     }
 
-    /* å…ˆé ­ã®ãƒ‡ãƒªãƒŸã‚¿ã‚’é£›ã°ã—ãŸã‚‰æ®‹ã‚Šã®æ–‡å­—æ•°ã‚’æ•°ãˆã‚‹ */
+    /* æ“ª‚ÌƒfƒŠƒ~ƒ^‚ğ”ò‚Î‚µ‚½‚çc‚è‚Ì•¶š”‚ğ”‚¦‚é */
     remain_length = strlen(self_p->strtok_pbuf);
     if (remain_length == 0) {
 	*result_pointer = NULL;
@@ -128,7 +132,7 @@ static int own_strtok(own_strtok_t * const __restrict self_p,
 	goto out;
     }
 
-    /* ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ãŸå ´åˆã‚¹ãƒšãƒ¼ã‚¹ã‚’é™¤å¤–ã™ã‚‹ */
+    /* ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚½ê‡ƒXƒy[ƒX‚ğœŠO‚·‚é */
     if (!(self_p->attr.f.untrim_space)) {
 	for (n = 0; n < remain_length; ++n) {
 	    if (delim2 == *self_p->strtok_pbuf) {
@@ -143,20 +147,20 @@ static int own_strtok(own_strtok_t * const __restrict self_p,
 	n = 0;
     }
 
-    /* æ¬¡ã®ãƒ‡ãƒªãƒŸã‚¿ã®ä½ç½®(ãƒˆãƒ¼ã‚¯ãƒ³ã®çµ‚ã‚ã‚Š)ã‚’æ¢ã™ */
+    /* Ÿ‚ÌƒfƒŠƒ~ƒ^‚ÌˆÊ’u(ƒg[ƒNƒ“‚ÌI‚í‚è)‚ğ’T‚· */
     delim_point = strpbrk(self_p->strtok_pbuf, delim);
     if ('\0' != delim2) {
 	delim2_point = strchr(self_p->strtok_pbuf, delim2);
     }
     if ((NULL == delim_point) && (NULL == delim2_point)) {
 	*result_pointer = self_p->strtok_pbuf;
-	self_p->strtok_pbuf += (remain_length - n);	/* Trimã—ãŸåˆ†ã‚’å¼•ã */
+	self_p->strtok_pbuf += (remain_length - n);	/* Trim‚µ‚½•ª‚ğˆø‚­ */
 	status = 0;
 	goto out;
     } else if ((delim_point == NULL)
 	       || (delim_point == self_p->strtok_pbuf)
 	       || ('\0' == *(self_p->strtok_pbuf))) {
-	/* ã“ã‚Œä»¥ä¸Šã€ãƒˆãƒ¼ã‚¯ãƒ³ã¯ç„¡ã„ */
+	/* ‚±‚êˆÈãAƒg[ƒNƒ“‚Í–³‚¢ */
 	*result_pointer = NULL;
 	status = 0;
 	goto out;
@@ -172,35 +176,35 @@ static int own_strtok(own_strtok_t * const __restrict self_p,
 
     switch (mode) {
     case NOT_FENCE:
-	/* å›²ã„æ–‡å­—ã§å›²ã¾ã‚Œã¦ãªã‹ã£ãŸå ´åˆ */
+	/* ˆÍ‚¢•¶š‚ÅˆÍ‚Ü‚ê‚Ä‚È‚©‚Á‚½ê‡ */
 	*delim_point = '\0';
 	*result_pointer = self_p->strtok_pbuf;
 	self_p->strtok_pbuf = delim_point + 1;
 	break;
 
     case IN_FENCE:
-	/* å›²ã„æ–‡å­—ã§å›²ã¾ã‚ŒãŸå ´åˆ */
+	/* ˆÍ‚¢•¶š‚ÅˆÍ‚Ü‚ê‚½ê‡ */
 
-	/* 1.å›²ã„æ–‡å­—ã®å…ˆé ­ã‚’é£›ã°ã™ */
+	/* 1.ˆÍ‚¢•¶š‚Ìæ“ª‚ğ”ò‚Î‚· */
 	self_p->strtok_pbuf = delim2_point + 1;
 
-	/* 2.å›²ã„æ–‡å­—ã®çµ‚äº†ã‚’æ¢ã™ */
+	/* 2.ˆÍ‚¢•¶š‚ÌI—¹‚ğ’T‚· */
 	delim2_point = strchr(self_p->strtok_pbuf, delim2);
 
-	/* 3a. è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆ */
+	/* 3a. Œ©‚Â‚©‚ç‚È‚¢ê‡ */
 	if (NULL == delim2_point) {
-	    /* ã‚¨ãƒ©ãƒ¼ãƒªã‚¿ãƒ¼ãƒ³ */
+	    /* ƒGƒ‰[ƒŠƒ^[ƒ“ */
 	    status = EIO;
 	    goto out;
 	}
 
-	/* 3b. è¦‹ã¤ã‹ã£ãŸå ´åˆå›²ã„æ–‡å­—ã‚’æ¶ˆã™ */
+	/* 3b. Œ©‚Â‚©‚Á‚½ê‡ˆÍ‚¢•¶š‚ğÁ‚· */
 
 	*result_pointer = self_p->strtok_pbuf;
 	*delim2_point = '\0';
 	self_p->strtok_pbuf = delim2_point + 1;
 
-	/* ã•ã‚‰ã«ãƒˆãƒ¼ã‚¯ãƒ³ãŒç¶šãå ´åˆã¯1æ–‡å­—ãƒˆãƒ¼ã‚¯ãƒ³ã‚’é£›ã°ã™ */
+	/* ‚³‚ç‚Éƒg[ƒNƒ“‚ª‘±‚­ê‡‚Í1•¶šƒg[ƒNƒ“‚ğ”ò‚Î‚· */
 	if( '\0' != *self_p->strtok_pbuf ) {
 	    delim_point = strchr((char *) delim, *self_p->strtok_pbuf);
 	    if (NULL != delim_point) {
@@ -221,11 +225,11 @@ static int own_strtok(own_strtok_t * const __restrict self_p,
 
 /**
  * @fn static int own_strtok_is_eol(own_strtok_t * const __restrict self_p, const char*const delim)
- * @brief è§£æå‡¦ç†ä¸­ã®å¾Œæ–¹ã«ãƒˆãƒ¼ã‚¯ãƒ³ã§åˆ†å‰²ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚
- * @param self_p own_strtokã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒã‚¤ãƒ³ã‚¿
- * @param ãƒˆãƒ¼ã‚¯ãƒ³åˆ†å‰²ã™ã‚‹ãŸã‚ã®æ–‡å­—ç¨®
- * @retval 0 å¾Œæ–¹ã‚‚è§£æã™ã‚‹å¿…è¦æœ‰ã‚Š
- * @retval 0ä»¥å¤– å¾Œæ–¹ã¯ã™ã§ã«è§£æã™ã‚‹å¿…è¦ãªã—(çµ‚ç«¯ã«é”ã—ã¦ã„ã‚‹)
+ * @brief ‰ğÍˆ—’†‚ÌŒã•û‚Éƒg[ƒNƒ“‚Å•ªŠ„‚·‚é•K—v‚ª‚ ‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B
+ * @param self_p own_strtokƒCƒ“ƒXƒ^ƒ“ƒXƒ|ƒCƒ“ƒ^
+ * @param ƒg[ƒNƒ“•ªŠ„‚·‚é‚½‚ß‚Ì•¶ší
+ * @retval 0 Œã•û‚à‰ğÍ‚·‚é•K—v—L‚è
+ * @retval 0ˆÈŠO Œã•û‚Í‚·‚Å‚É‰ğÍ‚·‚é•K—v‚È‚µ(I’[‚É’B‚µ‚Ä‚¢‚é)
  */
 static int own_strtok_is_eol(own_strtok_t * const __restrict self_p, const char*const delim)
 {
@@ -251,17 +255,17 @@ static int own_strtok_is_eol(own_strtok_t * const __restrict self_p, const char*
 
 /**
  * @fn int smal_cl2av_lite( char * const __restrict str, const char * __restrict delim, char delim2, int *const __restrict argc_p, char ** __restrict argv_p, const unsigned int limit, smal_cl2av_attr_t *const attr_p )
- * @brief æ–‡å­—åˆ—ã‚’è§£æã—ã¦è¦ç´ ã«åˆ†å‰²ã—ã¾ã™ã€‚ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã„ã‚‰ãªã„liteç‰ˆã§ã™
- *	ç¬¬ä¸€å¼•æ•°strã®æ–‡å­—åˆ—ã¯è§£ææ™‚ã«æ›¸ãæ›ãˆã‚‰ã‚Œã¾ã™ã€‚
- * @param str è¦ç´ ã”ã¨ã«åˆ†å‰²ã™ã‚‹æ–‡å­—åˆ—ãƒãƒƒãƒ•ã‚¡ã§ã™ã€‚åˆ†å‰²å¾Œã«ãƒãƒƒãƒ•ã‚¡å†…å®¹ã‚’æ›¸ãæ›ãˆã¾ã™
- * @param delim ãƒ‡ãƒªãƒŸã‚¿ã®ASCIIæ–‡å­—é›†åˆåˆ—( NULL ã§ " "ã¨ç­‰ä¾¡ )
- * @param delim2 å›²ã„æ–‡å­—ASCIIæ–‡å­—('\0'ã§ç„¡è¦–)
- * @param argc è¦ç´ æ•°ã‚’è¿”ã™ãŸã‚ã®å¤‰æ•°ãƒã‚¤ãƒ³ã‚¿
- * @param argv è¦ç´ ã«åˆ†å‰²ã•ã‚ŒãŸæ–‡å­—åˆ—ã®ãƒã‚¤ãƒ³ã‚¿é›†åˆã‚’è¿”ã—ã¾ã™ã€‚é…åˆ—æ•°ã¯æ¬¡ã®å¼•æ•°limitåˆ†ç¢ºä¿ã—ã¦ãã ã•ã„
- * @param limit è¦ç´ åˆ†å‰²ã®æœ€å¤§æ•°ã‚’è¿”ã—ã¾ã™ã€‚ argvé…åˆ—ã‚’è¶…ãˆã¦ã€ãƒãƒƒãƒ•ã‚¡ãƒ¼ã‚ªãƒ¼ãƒãƒ©ãƒ³ã‚’èµ·ã“ã•ãªã„ãŸã‚ã®ãƒªãƒŸãƒƒã‚¿ã§ã™ã€‚
- * @retval 0 æˆåŠŸ
- * @retval EINVAL å¼•æ•°ãŒä¸æ­£
- * @retval ERANGE limitã‚’è¶…ãˆã¦å¼•æ•°è§£æã‚’ã—ã‚ˆã†ã¨ã—ãŸ
+ * @brief •¶š—ñ‚ğ‰ğÍ‚µ‚Ä—v‘f‚É•ªŠ„‚µ‚Ü‚·BƒIƒuƒWƒFƒNƒg‚Ì‚¢‚ç‚È‚¢lite”Å‚Å‚·
+ *	‘æˆêˆø”str‚Ì•¶š—ñ‚Í‰ğÍ‚É‘‚«Š·‚¦‚ç‚ê‚Ü‚·B
+ * @param str —v‘f‚²‚Æ‚É•ªŠ„‚·‚é•¶š—ñƒoƒbƒtƒ@‚Å‚·B•ªŠ„Œã‚Éƒoƒbƒtƒ@“à—e‚ğ‘‚«Š·‚¦‚Ü‚·
+ * @param delim ƒfƒŠƒ~ƒ^‚ÌASCII•¶šW‡—ñ( NULL ‚Å " "‚Æ“™‰¿ )
+ * @param delim2 ˆÍ‚¢•¶šASCII•¶š('\0'‚Å–³‹)
+ * @param argc —v‘f”‚ğ•Ô‚·‚½‚ß‚Ì•Ï”ƒ|ƒCƒ“ƒ^
+ * @param argv —v‘f‚É•ªŠ„‚³‚ê‚½•¶š—ñ‚Ìƒ|ƒCƒ“ƒ^W‡‚ğ•Ô‚µ‚Ü‚·B”z—ñ”‚ÍŸ‚Ìˆø”limit•ªŠm•Û‚µ‚Ä‚­‚¾‚³‚¢
+ * @param limit —v‘f•ªŠ„‚ÌÅ‘å”‚ğ•Ô‚µ‚Ü‚·B argv”z—ñ‚ğ’´‚¦‚ÄAƒoƒbƒtƒ@[ƒI[ƒoƒ‰ƒ“‚ğ‹N‚±‚³‚È‚¢‚½‚ß‚ÌƒŠƒ~ƒbƒ^‚Å‚·B
+ * @retval 0 ¬Œ÷
+ * @retval EINVAL ˆø”‚ª•s³
+ * @retval ERANGE limit‚ğ’´‚¦‚Äˆø”‰ğÍ‚ğ‚µ‚æ‚¤‚Æ‚µ‚½
  **/
 int smal_cl2av_lite( char * const __restrict str, const char * __restrict delim, char delim2, int *const __restrict argc_p, char ** __restrict argv_p, const unsigned int limit, smal_cl2av_attr_t *const attr_p )
 {
