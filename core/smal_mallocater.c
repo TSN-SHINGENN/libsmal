@@ -25,11 +25,13 @@ typedef struct __mallocate_area_header {
     } stat;
 } _mallocate_area_header_t;
 
+smal_mallocater_t _smal_mallocater_heap_obj;
+
 /**
- * @fn void smal_mallocater_init_obj(smal_mallocater_t *const self_p, void *const buf, const uint32_t bufsize)
+ * @fn void smal_mallocater_init_obj(smal_mallocater_t *const self_p, void *const buf, const unsigned int bufsize)
  * @brief オブジェクトを初期化します。
  */
-void smal_mallocater_init_obj(smal_mallocater_t *const self_p, void *const buf, const uint32_t bufsize)
+void smal_mallocater_init_obj(smal_mallocater_t *const self_p, void *const buf, const unsigned int bufsize)
 {
     self_p->buf = buf;
     self_p->bufsize = bufsize;
@@ -124,6 +126,25 @@ void smal_mallocater_free_with_obj(smal_mallocater_t *const self_p, void * const
 
     return;
 }
+
+/**
+ * @fn unsigned int smal_mallocater_phys_with_obj(smal_mallocater_t *const self_p)
+ * @brief smal_mallocater_init_obj()に確保した容量を戻します。
+ **/
+unsigned int smal_mallocater_phys_with_obj(smal_mallocater_t *const self_p)
+{
+    return self_p->bufsize;
+}
+
+/**
+ * @fn unsigned int smal_mallocater_avphys_with_obj(smal_mallocater_t *const self_p)
+ * @brief 現在の空き容量を戻します。
+ */
+unsigned int smal_mallocater_avphys_with_obj(smal_mallocater_t *const self_p)
+{
+    return self_p->remain;
+}
+
 
 #if 0
 void _smal_mallocater_dump_region_list(smal_mallocater_t const *const self_p)
